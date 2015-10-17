@@ -1,0 +1,9 @@
+*.pyc
+.DS_Store
+.project
+.pydevproject
+fabfile.py
+.Python
+.idea*
+.settings*
+env/

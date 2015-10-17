@@ -1,0 +1,8 @@
+site_name: ThreatLab API Docs
+pages:
+- Home: index.md
+- Clients: clients.md
+
+theme: flatly
+
+#google_analytics: ['UA-575509-31', 'docs.threatlab.io']
