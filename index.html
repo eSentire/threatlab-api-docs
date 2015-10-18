@@ -292,13 +292,16 @@ The offset indicates the starting position of the query in relation to the compl
 
 <h3 id="sample-response-body_4">Sample response body</h3>
 <pre><code class="json">{
-    &quot;count&quot;: 1,
+    &quot;count&quot;: 2,
     &quot;next&quot;: null,
     &quot;previous&quot;: null,
     &quot;results&quot;: [
         {
             &quot;error&quot;: &quot;Invalid file format&quot;,
-        }
+            &quot;tool&quot;: &quot;SNORT&quot;,
+            &quot;pcap&quot;: &quot;http://www.threatlab.io/api/pcap/v1/3dbcaa40-cd9b-4fdf-87ec-8cf226e582ff&quot;
+        },
+        ...
     ]
 }
 </code></pre></div>
