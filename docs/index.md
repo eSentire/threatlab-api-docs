@@ -226,13 +226,16 @@ Method: ```GET```
 
 ```json
 {
-    "count": 1,
+    "count": 2,
     "next": null,
     "previous": null,
     "results": [
         {
             "error": "Invalid file format",
-        }
+            "tool": "SNORT",
+            "pcap": "http://www.threatlab.io/api/pcap/v1/3dbcaa40-cd9b-4fdf-87ec-8cf226e582ff"
+        },
+        ...
     ]
 }
 ```
