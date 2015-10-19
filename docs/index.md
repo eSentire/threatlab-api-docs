@@ -1,34 +1,7 @@
-# About
+# Threat Lab
 
-[ThreatLab](http://www.threatlab.io) is a PCAP analysis tool that uses [Snort](https://www.snort.org) and [Suricata](http://suricata-ids.org/) to scan network packet captures.<br/>
+[Threat Lab](http://www.threatlab.io) is a PCAP analysis tool that uses [Snort](https://www.snort.org) and [Suricata](http://suricata-ids.org/) to scan network packet captures.<br/>
 [EmergingThreats](http://www.emergingthreats.net/open-source/etopen-ruleset) rules are used for generating alerts.
-
-
-# Pagination
-
-ThreatLab API uses "Limit-Offset" pagination.
-The client includes both a "limit" and an "offset" query parameter. 
-The limit indicates the maximum number of items to return. The default limit size is 10. 
-The offset indicates the starting position of the query in relation to the complete set of unpaginated items.
-
-Request example:
-
-```curl
-GET http://www.threatlab.io/api/pcap/v1/3dbcaa40-cd9b-4fdf-87ec-8cf226e582ff/alerts/?limit=5&offset=5
-```
-
-Response:
-
-```json
-{
-    "count": 10,
-    "next": null,
-    "previous": "http://www.threatlab.io/api/pcap/v1/3dbcaa40-cd9b-4fdf-87ec-8cf226e582ff/alerts/?limit=5",
-    "results": [
-        ...
-    ]
-}
-```
 
 # APIs
 
@@ -38,27 +11,71 @@ Response:
 
 ## PCAP Upload
 
-Upload PCAP file for analysis
+Upload PCAP file and put in queue for analysis.
+
+Response will include an ID that you can use in other calls, such as checking task status and retrieving alerts and errors.
 
 ```/api/pcap/v1/upload/{filename}```  
 
 Method: ```PUT```
 
+### Parameters
+
 <table>
-<tr>
-<th>Parameter</th>
-<th>Data Type</th>
-<th>Required</th>
-<th>Description</th>
-</tr>
-<tr>
-<td>filename</td>
-<td>String</td>
-<td>Yes</td>
-<td>File name</td>
-</tr>
+    <thead>
+        <tr>
+            <th>Parameter</th>
+            <th>Parameter Type</th>
+            <th>Data Type</th>
+            <th>Required</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>filename</td>
+            <td>path</td>
+            <td>string</td>
+            <td>Yes</td>
+            <td>File name</td>
+        </tr>
+            <tr>
+            <td>file</td>
+            <td>body</td>
+            <td>file</td>
+            <td>Yes</td>
+            <td>Pcap file to analyze</td>
+        </tr>
+            <tr>
+            <td>private</td>
+            <td>query</td>
+            <td>boolean</td>
+            <td>No</td>
+            <td>Hide results from public</td>
+        </tr>
+    </tbody>
 </table>
 
+### Error Status Codes
+
+<table>
+    <thead>
+        <tr>
+            <th>HTTP Status Code</th>
+            <th>Reason</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>400</td>
+            <td>Invalid file format</td>
+        </tr>
+        <tr>
+            <td>200</td>
+            <td>Analysis task queued successfully</td>
+        </tr>
+    </tbody>
+</table>
 
 ### Testing with CURL
 
@@ -84,19 +101,48 @@ PCAP analysis status
 Method: ```GET```
 
 
+### Parameters
+
 <table>
-<tr>
-<th>Parameter</th>
-<th>Data Type</th>
-<th>Required</th>
-<th>Description</th>
-</tr>
-<tr>
-<td>id</td>
-<td>String</td>
-<td>Yes</td>
-<td>Upload ID</td>
-</tr>
+    <thead>
+        <tr>
+            <th>Parameter</th>
+            <th>Parameter Type</th>
+            <th>Data Type</th>
+            <th>Required</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>id</td>
+            <td>path</td>
+            <td>string</td>
+            <td>Yes</td>
+            <td>Upload ID</td>
+        </tr>
+    </tbody>
+</table>
+
+### Error Status Codes
+
+<table>
+    <thead>
+        <tr>
+            <th>HTTP Status Code</th>
+            <th>Reason</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>404</td>
+            <td>ID Not Found</td>
+        </tr>
+        <tr>
+            <td>200</td>
+            <td>ID found</td>
+        </tr>
+    </tbody>
 </table>
 
 
@@ -118,19 +164,48 @@ PCAP object details.
 Method: ```GET```
 
 
+### Parameters
+
 <table>
-<tr>
-<th>Parameter</th>
-<th>Data Type</th>
-<th>Required</th>
-<th>Description</th>
-</tr>
-<tr>
-<td>id</td>
-<td>String</td>
-<td>Yes</td>
-<td>Upload ID</td>
-</tr>
+    <thead>
+        <tr>
+            <th>Parameter</th>
+            <th>Parameter Type</th>
+            <th>Data Type</th>
+            <th>Required</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>id</td>
+            <td>path</td>
+            <td>string</td>
+            <td>Yes</td>
+            <td>Upload ID</td>
+        </tr>
+    </tbody>
+</table>
+
+### Error Status Codes
+
+<table>
+    <thead>
+        <tr>
+            <th>HTTP Status Code</th>
+            <th>Reason</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>404</td>
+            <td>ID Not Found</td>
+        </tr>
+        <tr>
+            <td>200</td>
+            <td>ID found</td>
+        </tr>
+    </tbody>
 </table>
 
 
@@ -150,26 +225,55 @@ Method: ```GET```
 
 ## PCAP Alerts
 
-IDS alerts generated during analysis.
+Return list of all IDS Alerts generated for the PCAP file.
 
 ```/api/pcap/v1/{id}/alerts/```  
 
 Method: ```GET```
 
 
+### Parameters
+
 <table>
-<tr>
-<th>Parameter</th>
-<th>Data Type</th>
-<th>Required</th>
-<th>Description</th>
-</tr>
-<tr>
-<td>id</td>
-<td>String</td>
-<td>Yes</td>
-<td>Upload ID</td>
-</tr>
+    <thead>
+        <tr>
+            <th>Parameter</th>
+            <th>Parameter Type</th>
+            <th>Data Type</th>
+            <th>Required</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>id</td>
+            <td>path</td>
+            <td>string</td>
+            <td>Yes</td>
+            <td>Upload ID</td>
+        </tr>
+    </tbody>
+</table>
+
+### Error Status Codes
+
+<table>
+    <thead>
+        <tr>
+            <th>HTTP Status Code</th>
+            <th>Reason</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>404</td>
+            <td>ID Not Found</td>
+        </tr>
+        <tr>
+            <td>200</td>
+            <td>ID found</td>
+        </tr>
+    </tbody>
 </table>
 
 
@@ -205,22 +309,49 @@ Errors logged during analysis.
 
 Method: ```GET```
 
+### Parameters
 
 <table>
-<tr>
-<th>Parameter</th>
-<th>Data Type</th>
-<th>Required</th>
-<th>Description</th>
-</tr>
-<tr>
-<td>id</td>
-<td>String</td>
-<td>Yes</td>
-<td>Upload ID</td>
-</tr>
+    <thead>
+        <tr>
+            <th>Parameter</th>
+            <th>Parameter Type</th>
+            <th>Data Type</th>
+            <th>Required</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>id</td>
+            <td>path</td>
+            <td>string</td>
+            <td>Yes</td>
+            <td>Upload ID</td>
+        </tr>
+    </tbody>
 </table>
 
+### Error Status Codes
+
+<table>
+    <thead>
+        <tr>
+            <th>HTTP Status Code</th>
+            <th>Reason</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>404</td>
+            <td>ID Not Found</td>
+        </tr>
+        <tr>
+            <td>200</td>
+            <td>ID found</td>
+        </tr>
+    </tbody>
+</table>
 
 ### Sample response body
 
@@ -235,6 +366,32 @@ Method: ```GET```
             "tool": "SNORT",
             "pcap": "http://www.threatlab.io/api/pcap/v1/3dbcaa40-cd9b-4fdf-87ec-8cf226e582ff"
         },
+        ...
+    ]
+}
+```
+
+# Pagination
+
+ThreatLab API uses "Limit-Offset" pagination.
+The client includes both a "limit" and an "offset" query parameter. 
+The limit indicates the maximum number of items to return. The default limit size is 10. 
+The offset indicates the starting position of the query in relation to the complete set of unpaginated items.
+
+Request example:
+
+```curl
+GET http://www.threatlab.io/api/pcap/v1/3dbcaa40-cd9b-4fdf-87ec-8cf226e582ff/alerts/?limit=5&offset=5
+```
+
+Response:
+
+```json
+{
+    "count": 10,
+    "next": null,
+    "previous": "http://www.threatlab.io/api/pcap/v1/3dbcaa40-cd9b-4fdf-87ec-8cf226e582ff/alerts/?limit=5",
+    "results": [
         ...
     ]
 }
