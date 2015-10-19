@@ -95,10 +95,7 @@
             <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
     
-        <li class="main active"><a href="#about">About</a></li>
-        
-    
-        <li class="main "><a href="#pagination">Pagination</a></li>
+        <li class="main active"><a href="#threat-lab">Threat Lab</a></li>
         
     
         <li class="main "><a href="#apis">APIs</a></li>
@@ -114,55 +111,80 @@
             <li><a href="#pcap-errors">PCAP Errors</a></li>
         
     
+        <li class="main "><a href="#pagination">Pagination</a></li>
+        
+    
     </ul>
 </div></div>
             <div class="col-md-9" role="main">
 
-<h1 id="about">About</h1>
-<p><a href="http://www.threatlab.io">ThreatLab</a> is a PCAP analysis tool that uses <a href="https://www.snort.org">Snort</a> and <a href="http://suricata-ids.org/">Suricata</a> to scan network packet captures.<br/>
+<h1 id="threat-lab">Threat Lab</h1>
+<p><a href="http://www.threatlab.io">Threat Lab</a> is a PCAP analysis tool that uses <a href="https://www.snort.org">Snort</a> and <a href="http://suricata-ids.org/">Suricata</a> to scan network packet captures.<br/>
 <a href="http://www.emergingthreats.net/open-source/etopen-ruleset">EmergingThreats</a> rules are used for generating alerts.</p>
-<h1 id="pagination">Pagination</h1>
-<p>ThreatLab API uses "Limit-Offset" pagination.
-The client includes both a "limit" and an "offset" query parameter. 
-The limit indicates the maximum number of items to return. The default limit size is 10. 
-The offset indicates the starting position of the query in relation to the complete set of unpaginated items.</p>
-<p>Request example:</p>
-<pre><code class="curl">GET http://www.threatlab.io/api/pcap/v1/3dbcaa40-cd9b-4fdf-87ec-8cf226e582ff/alerts/?limit=5&amp;offset=5
-</code></pre>
-
-<p>Response:</p>
-<pre><code class="json">{
-    &quot;count&quot;: 10,
-    &quot;next&quot;: null,
-    &quot;previous&quot;: &quot;http://www.threatlab.io/api/pcap/v1/3dbcaa40-cd9b-4fdf-87ec-8cf226e582ff/alerts/?limit=5&quot;,
-    &quot;results&quot;: [
-        ...
-    ]
-}
-</code></pre>
-
 <h1 id="apis">APIs</h1>
 <blockquote>
 <p>You can interact and test the APIs in your browser:</p>
 <p><a href="http://www.threatlab.io/api/console/">http://www.threatlab.io/api/console/</a></p>
 </blockquote>
 <h2 id="pcap-upload">PCAP Upload</h2>
-<p>Upload PCAP file for analysis</p>
+<p>Upload PCAP file and put in queue for analysis.</p>
+<p>Response will include an ID that you can use in other calls, such as checking task status and retrieving alerts and errors.</p>
 <p><code>/api/pcap/v1/upload/{filename}</code>  </p>
 <p>Method: <code>PUT</code></p>
+<h3 id="parameters">Parameters</h3>
 <table>
-<tr>
-<th>Parameter</th>
-<th>Data Type</th>
-<th>Required</th>
-<th>Description</th>
-</tr>
-<tr>
-<td>filename</td>
-<td>String</td>
-<td>Yes</td>
-<td>File name</td>
-</tr>
+    <thead>
+        <tr>
+            <th>Parameter</th>
+            <th>Parameter Type</th>
+            <th>Data Type</th>
+            <th>Required</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>filename</td>
+            <td>path</td>
+            <td>string</td>
+            <td>Yes</td>
+            <td>File name</td>
+        </tr>
+            <tr>
+            <td>file</td>
+            <td>body</td>
+            <td>file</td>
+            <td>Yes</td>
+            <td>Pcap file to analyze</td>
+        </tr>
+            <tr>
+            <td>private</td>
+            <td>query</td>
+            <td>boolean</td>
+            <td>No</td>
+            <td>Hide results from public</td>
+        </tr>
+    </tbody>
+</table>
+
+<h3 id="error-status-codes">Error Status Codes</h3>
+<table>
+    <thead>
+        <tr>
+            <th>HTTP Status Code</th>
+            <th>Reason</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>400</td>
+            <td>Invalid file format</td>
+        </tr>
+        <tr>
+            <td>200</td>
+            <td>Analysis task queued successfully</td>
+        </tr>
+    </tbody>
 </table>
 
 <h3 id="testing-with-curl">Testing with CURL</h3>
@@ -179,19 +201,46 @@ The offset indicates the starting position of the query in relation to the compl
 <p>PCAP analysis status</p>
 <p><code>/api/pcap/v1/{id}/status/</code>    </p>
 <p>Method: <code>GET</code></p>
+<h3 id="parameters_1">Parameters</h3>
 <table>
-<tr>
-<th>Parameter</th>
-<th>Data Type</th>
-<th>Required</th>
-<th>Description</th>
-</tr>
-<tr>
-<td>id</td>
-<td>String</td>
-<td>Yes</td>
-<td>Upload ID</td>
-</tr>
+    <thead>
+        <tr>
+            <th>Parameter</th>
+            <th>Parameter Type</th>
+            <th>Data Type</th>
+            <th>Required</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>id</td>
+            <td>path</td>
+            <td>string</td>
+            <td>Yes</td>
+            <td>Upload ID</td>
+        </tr>
+    </tbody>
+</table>
+
+<h3 id="error-status-codes_1">Error Status Codes</h3>
+<table>
+    <thead>
+        <tr>
+            <th>HTTP Status Code</th>
+            <th>Reason</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>404</td>
+            <td>ID Not Found</td>
+        </tr>
+        <tr>
+            <td>200</td>
+            <td>ID found</td>
+        </tr>
+    </tbody>
 </table>
 
 <h3 id="sample-response-body_1">Sample response body</h3>
@@ -204,19 +253,46 @@ The offset indicates the starting position of the query in relation to the compl
 <p>PCAP object details.</p>
 <p><code>/api/pcap/v1/{id}/</code>  </p>
 <p>Method: <code>GET</code></p>
+<h3 id="parameters_2">Parameters</h3>
 <table>
-<tr>
-<th>Parameter</th>
-<th>Data Type</th>
-<th>Required</th>
-<th>Description</th>
-</tr>
-<tr>
-<td>id</td>
-<td>String</td>
-<td>Yes</td>
-<td>Upload ID</td>
-</tr>
+    <thead>
+        <tr>
+            <th>Parameter</th>
+            <th>Parameter Type</th>
+            <th>Data Type</th>
+            <th>Required</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>id</td>
+            <td>path</td>
+            <td>string</td>
+            <td>Yes</td>
+            <td>Upload ID</td>
+        </tr>
+    </tbody>
+</table>
+
+<h3 id="error-status-codes_2">Error Status Codes</h3>
+<table>
+    <thead>
+        <tr>
+            <th>HTTP Status Code</th>
+            <th>Reason</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>404</td>
+            <td>ID Not Found</td>
+        </tr>
+        <tr>
+            <td>200</td>
+            <td>ID found</td>
+        </tr>
+    </tbody>
 </table>
 
 <h3 id="sample-response-body_2">Sample response body</h3>
@@ -231,22 +307,49 @@ The offset indicates the starting position of the query in relation to the compl
 </code></pre>
 
 <h2 id="pcap-alerts">PCAP Alerts</h2>
-<p>IDS alerts generated during analysis.</p>
+<p>Return list of all IDS Alerts generated for the PCAP file.</p>
 <p><code>/api/pcap/v1/{id}/alerts/</code>  </p>
 <p>Method: <code>GET</code></p>
+<h3 id="parameters_3">Parameters</h3>
 <table>
-<tr>
-<th>Parameter</th>
-<th>Data Type</th>
-<th>Required</th>
-<th>Description</th>
-</tr>
-<tr>
-<td>id</td>
-<td>String</td>
-<td>Yes</td>
-<td>Upload ID</td>
-</tr>
+    <thead>
+        <tr>
+            <th>Parameter</th>
+            <th>Parameter Type</th>
+            <th>Data Type</th>
+            <th>Required</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>id</td>
+            <td>path</td>
+            <td>string</td>
+            <td>Yes</td>
+            <td>Upload ID</td>
+        </tr>
+    </tbody>
+</table>
+
+<h3 id="error-status-codes_3">Error Status Codes</h3>
+<table>
+    <thead>
+        <tr>
+            <th>HTTP Status Code</th>
+            <th>Reason</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>404</td>
+            <td>ID Not Found</td>
+        </tr>
+        <tr>
+            <td>200</td>
+            <td>ID found</td>
+        </tr>
+    </tbody>
 </table>
 
 <h3 id="sample-response-body_3">Sample response body</h3>
@@ -275,19 +378,46 @@ The offset indicates the starting position of the query in relation to the compl
 <p>Errors logged during analysis.</p>
 <p><code>/api/pcap/v1/{id}/errors/</code>    </p>
 <p>Method: <code>GET</code></p>
+<h3 id="parameters_4">Parameters</h3>
 <table>
-<tr>
-<th>Parameter</th>
-<th>Data Type</th>
-<th>Required</th>
-<th>Description</th>
-</tr>
-<tr>
-<td>id</td>
-<td>String</td>
-<td>Yes</td>
-<td>Upload ID</td>
-</tr>
+    <thead>
+        <tr>
+            <th>Parameter</th>
+            <th>Parameter Type</th>
+            <th>Data Type</th>
+            <th>Required</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>id</td>
+            <td>path</td>
+            <td>string</td>
+            <td>Yes</td>
+            <td>Upload ID</td>
+        </tr>
+    </tbody>
+</table>
+
+<h3 id="error-status-codes_4">Error Status Codes</h3>
+<table>
+    <thead>
+        <tr>
+            <th>HTTP Status Code</th>
+            <th>Reason</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>404</td>
+            <td>ID Not Found</td>
+        </tr>
+        <tr>
+            <td>200</td>
+            <td>ID found</td>
+        </tr>
+    </tbody>
 </table>
 
 <h3 id="sample-response-body_4">Sample response body</h3>
@@ -301,6 +431,26 @@ The offset indicates the starting position of the query in relation to the compl
             &quot;tool&quot;: &quot;SNORT&quot;,
             &quot;pcap&quot;: &quot;http://www.threatlab.io/api/pcap/v1/3dbcaa40-cd9b-4fdf-87ec-8cf226e582ff&quot;
         },
+        ...
+    ]
+}
+</code></pre>
+
+<h1 id="pagination">Pagination</h1>
+<p>ThreatLab API uses "Limit-Offset" pagination.
+The client includes both a "limit" and an "offset" query parameter. 
+The limit indicates the maximum number of items to return. The default limit size is 10. 
+The offset indicates the starting position of the query in relation to the complete set of unpaginated items.</p>
+<p>Request example:</p>
+<pre><code class="curl">GET http://www.threatlab.io/api/pcap/v1/3dbcaa40-cd9b-4fdf-87ec-8cf226e582ff/alerts/?limit=5&amp;offset=5
+</code></pre>
+
+<p>Response:</p>
+<pre><code class="json">{
+    &quot;count&quot;: 10,
+    &quot;next&quot;: null,
+    &quot;previous&quot;: &quot;http://www.threatlab.io/api/pcap/v1/3dbcaa40-cd9b-4fdf-87ec-8cf226e582ff/alerts/?limit=5&quot;,
+    &quot;results&quot;: [
         ...
     ]
 }
