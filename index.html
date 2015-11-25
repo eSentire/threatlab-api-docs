@@ -129,7 +129,7 @@
 <h2 id="pcap-upload">PCAP Upload</h2>
 <p>Upload PCAP file and put in queue for analysis.</p>
 <p>Response will include an ID that you can use in other calls, such as checking task status and retrieving alerts and errors.</p>
-<p><code>/api/pcap/v1/upload/{filename}</code>  </p>
+<p><code>/api/pcap/v1/upload/</code>  </p>
 <p>Method: <code>PUT</code></p>
 <h3 id="parameters">Parameters</h3>
 <table>
@@ -144,13 +144,6 @@
     </thead>
     <tbody>
         <tr>
-            <td>filename</td>
-            <td>path</td>
-            <td>string</td>
-            <td>Yes</td>
-            <td>File name</td>
-        </tr>
-            <tr>
             <td>file</td>
             <td>body</td>
             <td>file</td>
@@ -188,7 +181,7 @@
 </table>
 
 <h3 id="testing-with-curl">Testing with CURL</h3>
-<pre><code class="bash">curl 'http://www.threatlab.io/api/pcap/v1/upload/' --upload-file ~/Downloads/sample.pcap
+<pre><code class="bash">curl 'http://www.threatlab.io/api/pcap/v1/upload' --upload-file ~/Downloads/sample.pcap
 </code></pre>
 
 <h3 id="sample-response-body">Sample response body</h3>
@@ -199,7 +192,7 @@
 
 <h2 id="pcap-status">PCAP Status</h2>
 <p>PCAP analysis status</p>
-<p><code>/api/pcap/v1/{id}/status/</code>    </p>
+<p><code>/api/pcap/v1/status/{id}/</code>    </p>
 <p>Method: <code>GET</code></p>
 <h3 id="parameters_1">Parameters</h3>
 <table>
@@ -251,7 +244,7 @@
 
 <h2 id="pcap-detail">PCAP Detail</h2>
 <p>PCAP object details.</p>
-<p><code>/api/pcap/v1/{id}/</code>  </p>
+<p><code>/api/pcap/v1/detail/{id}/</code>  </p>
 <p>Method: <code>GET</code></p>
 <h3 id="parameters_2">Parameters</h3>
 <table>
@@ -297,18 +290,18 @@
 
 <h3 id="sample-response-body_2">Sample response body</h3>
 <pre><code class="json">{
-    &quot;id&quot;: &quot;3dbcaa40-cd9b-4fdf-87ec-8cf226e582ff&quot;,
-    &quot;status&quot;: &quot;READY&quot;,
-    &quot;is_private&quot;: false,
-    &quot;created&quot;: &quot;2015-10-07T21:47:51.224781Z&quot;,
-    &quot;alerts&quot;: &quot;http://www.threatlab.io/api/pcap/v1/3dbcaa40-cd9b-4fdf-87ec-8cf226e582ff/alerts&quot;,
-    &quot;errors&quot;: &quot;http://www.threatlab.io/api/pcap/v1/3dbcaa40-cd9b-4fdf-87ec-8cf226e582ff/errors&quot;
+      &quot;id&quot;: &quot;bd508819-79d9-4c5d-b09a-4996a067d066&quot;,
+      &quot;status&quot;: &quot;READY&quot;,
+      &quot;is_private&quot;: false,
+      &quot;created&quot;: &quot;2015-10-17T22:47:40.094372Z&quot;,
+      &quot;alerts&quot;: 63,
+      &quot;errors&quot;: 3
 }
 </code></pre>
 
 <h2 id="pcap-alerts">PCAP Alerts</h2>
 <p>Return list of all IDS Alerts generated for the PCAP file.</p>
-<p><code>/api/pcap/v1/{id}/alerts/</code>  </p>
+<p><code>/api/pcap/v1/alerts/{id}/</code>  </p>
 <p>Method: <code>GET</code></p>
 <h3 id="parameters_3">Parameters</h3>
 <table>
@@ -376,7 +369,7 @@
 
 <h2 id="pcap-errors">PCAP Errors</h2>
 <p>Errors logged during analysis.</p>
-<p><code>/api/pcap/v1/{id}/errors/</code>    </p>
+<p><code>/api/pcap/v1/errors/{id}/</code>    </p>
 <p>Method: <code>GET</code></p>
 <h3 id="parameters_4">Parameters</h3>
 <table>
@@ -442,14 +435,14 @@ The client includes both a "limit" and an "offset" query parameter.
 The limit indicates the maximum number of items to return. The default limit size is 10. 
 The offset indicates the starting position of the query in relation to the complete set of unpaginated items.</p>
 <p>Request example:</p>
-<pre><code class="curl">GET http://www.threatlab.io/api/pcap/v1/3dbcaa40-cd9b-4fdf-87ec-8cf226e582ff/alerts/?limit=5&amp;offset=5
+<pre><code class="curl">GET http://www.threatlab.io/api/pcap/v1/alerts/3dbcaa40-cd9b-4fdf-87ec-8cf226e582ff/?limit=5&amp;offset=5
 </code></pre>
 
 <p>Response:</p>
 <pre><code class="json">{
     &quot;count&quot;: 10,
     &quot;next&quot;: null,
-    &quot;previous&quot;: &quot;http://www.threatlab.io/api/pcap/v1/3dbcaa40-cd9b-4fdf-87ec-8cf226e582ff/alerts/?limit=5&quot;,
+    &quot;previous&quot;: &quot;http://www.threatlab.io/api/pcap/v1/alerts/3dbcaa40-cd9b-4fdf-87ec-8cf226e582ff/?limit=5&quot;,
     &quot;results&quot;: [
         ...
     ]

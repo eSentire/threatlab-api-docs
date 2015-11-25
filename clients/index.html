@@ -107,16 +107,21 @@
 <h1 id="client-libraries">Client Libraries</h1>
 <h2 id="python">Python</h2>
 <h3 id="slumber">slumber</h3>
-<p>Slumber is a python library that provides a convenient yet powerful object orientated interface to ReSTful APIs. It acts as a wrapper around the excellent requests library and abstracts away the handling of urls, serialization, and processing requests.</p>
-<p>Source: <a href="https://github.com/samgiles/slumber">https://github.com/samgiles/slumber</a></p>
+<p><a href="https://github.com/samgiles/slumber">Slumber</a> is a python library that provides a convenient yet powerful object orientated interface to ReSTful APIs. It acts as a wrapper around the excellent requests library and abstracts away the handling of urls, serialization, and processing requests.</p>
+<p>Installation:</p>
+<pre><code class="bash">pip install slumber
+</code></pre>
+
 <p>Usage example:</p>
 <pre><code class="python">&gt;&gt;&gt; import slumber
 &gt;&gt;&gt; ## Connect to http://www.threatlab.io/api/pcap/v1/ with no authentication
 &gt;&gt;&gt; api = slumber.API(&quot;http://www.threatlab.io/api/pcap/v1/&quot;)
-&gt;&gt;&gt; ## GET http://www.threatlab.io/api/pcap/v1/pcap/f7c14dc9-100d-4a01-8c9e-fe7e40b7c548
-&gt;&gt;&gt; api.pcap('f7c14dc9-100d-4a01-8c9e-fe7e40b7c548').get()
-&gt;&gt;&gt; ## GET http://www.threatlab.io/api/pcap/v1/pcap/f7c14dc9-100d-4a01-8c9e-fe7e40b7c548/alerts
-&gt;&gt;&gt; api.pcap('f7c14dc9-100d-4a01-8c9e-fe7e40b7c548').alerts().get()
+&gt;&gt;&gt; ## Upload file for analysis
+&gt;&gt;&gt; api.upload.put(files={'file': open('sample.pcap', 'r')})
+&gt;&gt;&gt; ## GET http://www.threatlab.io/api/pcap/v1/pcap/detail/f7c14dc9-100d-4a01-8c9e-fe7e40b7c548
+&gt;&gt;&gt; api.detail('f7c14dc9-100d-4a01-8c9e-fe7e40b7c548').get()
+&gt;&gt;&gt; ## GET http://www.threatlab.io/api/pcap/v1/pcap/alerts/f7c14dc9-100d-4a01-8c9e-fe7e40b7c548
+&gt;&gt;&gt; api.alerts('f7c14dc9-100d-4a01-8c9e-fe7e40b7c548').get()
 </code></pre></div>
         </div>
 
