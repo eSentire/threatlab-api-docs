@@ -15,7 +15,7 @@ Upload PCAP file and put in queue for analysis.
 
 Response will include an ID that you can use in other calls, such as checking task status and retrieving alerts and errors.
 
-```/api/pcap/v1/upload/{filename}```  
+```/api/pcap/v1/upload/```  
 
 Method: ```PUT```
 
@@ -33,13 +33,6 @@ Method: ```PUT```
     </thead>
     <tbody>
         <tr>
-            <td>filename</td>
-            <td>path</td>
-            <td>string</td>
-            <td>Yes</td>
-            <td>File name</td>
-        </tr>
-            <tr>
             <td>file</td>
             <td>body</td>
             <td>file</td>
@@ -80,7 +73,7 @@ Method: ```PUT```
 ### Testing with CURL
 
 ```bash
-curl 'http://www.threatlab.io/api/pcap/v1/upload/' --upload-file ~/Downloads/sample.pcap
+curl 'http://www.threatlab.io/api/pcap/v1/upload' --upload-file ~/Downloads/sample.pcap
 ```
 
 ### Sample response body
@@ -96,7 +89,7 @@ curl 'http://www.threatlab.io/api/pcap/v1/upload/' --upload-file ~/Downloads/sam
 
 PCAP analysis status
 
-```/api/pcap/v1/{id}/status/```    
+```/api/pcap/v1/status/{id}/```    
 
 Method: ```GET```
 
@@ -159,7 +152,7 @@ Method: ```GET```
 
 PCAP object details.
 
-```/api/pcap/v1/{id}/```  
+```/api/pcap/v1/detail/{id}/```  
 
 Method: ```GET```
 
@@ -213,12 +206,12 @@ Method: ```GET```
 
 ```json
 {
-    "id": "3dbcaa40-cd9b-4fdf-87ec-8cf226e582ff",
-    "status": "READY",
-    "is_private": false,
-    "created": "2015-10-07T21:47:51.224781Z",
-    "alerts": "http://www.threatlab.io/api/pcap/v1/3dbcaa40-cd9b-4fdf-87ec-8cf226e582ff/alerts",
-    "errors": "http://www.threatlab.io/api/pcap/v1/3dbcaa40-cd9b-4fdf-87ec-8cf226e582ff/errors"
+      "id": "bd508819-79d9-4c5d-b09a-4996a067d066",
+      "status": "READY",
+      "is_private": false,
+      "created": "2015-10-17T22:47:40.094372Z",
+      "alerts": 63,
+      "errors": 3
 }
 ```
 
@@ -227,7 +220,7 @@ Method: ```GET```
 
 Return list of all IDS Alerts generated for the PCAP file.
 
-```/api/pcap/v1/{id}/alerts/```  
+```/api/pcap/v1/alerts/{id}/```  
 
 Method: ```GET```
 
@@ -305,7 +298,7 @@ Method: ```GET```
 
 Errors logged during analysis.
 
-```/api/pcap/v1/{id}/errors/```    
+```/api/pcap/v1/errors/{id}/```    
 
 Method: ```GET```
 
@@ -381,7 +374,7 @@ The offset indicates the starting position of the query in relation to the compl
 Request example:
 
 ```curl
-GET http://www.threatlab.io/api/pcap/v1/3dbcaa40-cd9b-4fdf-87ec-8cf226e582ff/alerts/?limit=5&offset=5
+GET http://www.threatlab.io/api/pcap/v1/alerts/3dbcaa40-cd9b-4fdf-87ec-8cf226e582ff/?limit=5&offset=5
 ```
 
 Response:
@@ -390,7 +383,7 @@ Response:
 {
     "count": 10,
     "next": null,
-    "previous": "http://www.threatlab.io/api/pcap/v1/3dbcaa40-cd9b-4fdf-87ec-8cf226e582ff/alerts/?limit=5",
+    "previous": "http://www.threatlab.io/api/pcap/v1/alerts/3dbcaa40-cd9b-4fdf-87ec-8cf226e582ff/?limit=5",
     "results": [
         ...
     ]
